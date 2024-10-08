@@ -1,3 +1,4 @@
+
 import fs from 'node:fs/promises';
 
 import bodyParser from 'body-parser';
@@ -21,8 +22,11 @@ app.get('/meals', async (req, res) => {
 });
 
 app.post('/orders', async (req, res) => {
+  
   const orderData = req.body.order;
+  console.log(orderData);
 
+  
   if (orderData === null || orderData.items === null || orderData.items.length === 0) {
     return res
       .status(400)
@@ -37,10 +41,11 @@ app.post('/orders', async (req, res) => {
     orderData.customer.street === null ||
     orderData.customer.street.trim() === '' ||
     orderData.customer['postal-code'] === null ||
-    orderData.customer['postal-code'].trim() === '' ||
+    // orderData.customer['postal-code'].trim() === '' ||
     orderData.customer.city === null ||
     orderData.customer.city.trim() === ''
-  ) {
+  ) 
+  {
     return res.status(400).json({
       message:
         'Missing data: Email, name, street, postal code or city is missing.',

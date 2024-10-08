@@ -1,3 +1,4 @@
+
 import { useContext } from "react";
 
 import Modal from "./UI/Modal.jsx";
@@ -48,24 +49,38 @@ export default function Checkout() {
     const fd = new FormData(event.target);
     const customerData = Object.fromEntries(fd.entries());
 
-    sendRequest({
-      order: {
-        items: cartCtx.items,
-        customer: customerData
-      },
-    });
-
+    // sendRequest({
+    //   order: {
+    //     items: cartCtx.items,
+    //     customer: customerData
+    //   },
+    // });
+    
     fetch('http://localhost:3000/orders', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
+      
       body: JSON.stringify({
         order: {
           items: cartCtx.items,
           customer: customerData
         }
+        
       })
+    
+    }) .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json(); 
+    })
+    .then(data => {
+      alert('Success:', data); 
+    })
+    .catch((error) => {
+      console.error('Error:', error); 
     });
   }
 
